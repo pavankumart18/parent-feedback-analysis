@@ -403,7 +403,7 @@ function renderMatrixTable() {
 
     addHeader("# School", "260px", "name");
     addHeader("City/Country", "180px", "city");
-    addHeader("Overall", "100px", "overall", "#f1f5f9");
+    addHeader("Overall Score", "180px", "overall", "#f1f5f9");
 
     THEMES.forEach(t => {
         addHeader(t, "110px", t);
@@ -431,7 +431,7 @@ function renderMatrixTable() {
             .on("mouseover", function () { d3.select(this).style("text-decoration", "underline").style("color", "#2563eb"); })
             .on("mouseout", function () { d3.select(this).style("text-decoration", "none").style("color", "#0f172a"); });
 
-        tr.append("td").style("color", "#334155").style("font-size", "13px").style("font-weight", "500").text(school.city || "—");
+        tr.append("td").style("color", "#334155").style("font-size", "13px").style("font-weight", "500").style("white-space", "nowrap").text(school.city || "—");
 
         const scorePct = school.overall_percent || 0;
         let ovColor = "#ef4444";
