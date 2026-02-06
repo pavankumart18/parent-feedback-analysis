@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nord Anglia | Global Sentiment Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="logo-area">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+            </svg>
+            <span>NORD ANGLIA EDUCATION</span>
+        </div>
+        <nav class="nav-tabs">
+            <button class="tab-btn active" data-target="view-matrix">Matrix View</button>
+            <button class="tab-btn" data-target="view-story">Strategic Brief</button>
+        </nav>
+    </header>
+
+    <main>
+
+        <!-- View 1: Narrative (Modern Layout) -->
+        <div id="view-story" class="view-section">
+            <div class="story-wrapper">
+
+                <div class="story-header">
+                    <h1>Network Performance Audit: Protecting the Premium Value Proposition</h1>
+                    <div class="subtitle">A diagnostic assessment of institutional resilience across the global network.
+                        While academic delivery remains the core value-driver, systemic friction in staffing stability
+                        and operational responsiveness is creating a measurable erosion of brand equity among key
+                        stakeholders.</div>
+                </div>
+
+                <div class="kpi-grid">
+                    <div class="kpi-card">
+                        <span class="kpi-val" id="kpi-total">...</span>
+                        <span class="kpi-label">Responses Analyzed</span>
+                        <div class="kpi-sub" style="color:#10b981">Full Coverage</div>
+                    </div>
+                    <div class="kpi-card">
+                        <span class="kpi-val" id="kpi-score">...</span>
+                        <span class="kpi-label">Net Sentiment Score</span>
+                        <div class="kpi-sub" style="color:#f59e0b">Plateauing Trend</div>
+                    </div>
+                    <div class="kpi-card">
+                        <span class="kpi-val" id="kpi-risk">...</span>
+                        <span class="kpi-label">Negative Feedback %</span>
+                        <div class="kpi-sub" style="color:#ef4444">Above Benchmark</div>
+                    </div>
+                </div>
+
+                <div class="content-grid">
+                    <!-- Text Column -->
+                    <div class="narrative-column">
+                        <div class="narrative-block">
+                            <h3>1. The Stability Paradox</h3>
+                            <p>The most critical driver of dissatisfaction is not the curriculum, but the
+                                <strong>continuity of the people delivering it</strong>. Text analysis shows that
+                                <strong id="stability-stat-1" style="color:#ef4444">...</strong> of "Teacher Quality"
+                                comments are negative, explicitly citing turnover.
+                            </p>
+                            <p>This creates a psychological toll where families hesitate to bond with educators they
+                                fear will be replaced mid-year.</p>
+
+                            <div class="verbatim-box">
+                                <span id="stability-verbatim-text">"No feedback available."</span>
+                                <div
+                                    style="margin-top:12px; font-size:12px; color:#64748b; font-style:normal; font-weight:600; text-align:right;">
+                                    — <span id="stability-verbatim-school">School</span>, <span
+                                        id="stability-verbatim-city">City</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="narrative-block">
+                            <h3>2. The "Hard" vs "Soft" Disconnect</h3>
+                            <p>There is a chasm between "Soft" assets (Community, Wellbeing) and "Hard" assets. A
+                                significant <span id="value-stat-1" style="font-weight:bold">...</span> of "Resources &
+                                Capacity"
+                                complaints reference limited support services or infrastructure. Parents paying premium
+                                fees expect premium resources.</p>
+                        </div>
+
+                        <div class="narrative-block">
+                            <h3>3. Systemic Friction Points</h3>
+                            <p>We identified specific phrases appearing frequently in negative feedback. These "friction
+                                points" (e.g., poor communication speed) are universal drags on NPS.</p>
+
+                            <div class="chart-container-embedded">
+                                <h4 style="margin:0 0 20px 0; font-size:14px; font-weight:700; color:#64748b;">Top
+                                    Negative Drivers (Frequency)</h4>
+                                <div style="height: 250px;">
+                                    <canvas id="driverChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sidebar Column -->
+                    <div class="sidebar-sticky">
+                        <div class="sidebar-card">
+                            <div class="sidebar-title">The Bottom Line</div>
+                            <div class="insight-box">
+                                <div class="insight-text">
+                                    <strong>Recommendation:</strong><br>
+                                    Treat <strong>Staff Retention</strong> as a core product feature. Improve
+                                    <strong>Operational Responsiveness</strong> to see immediate NPS gains.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="sidebar-card">
+                            <div class="sidebar-title">Negative Sentiment Share</div>
+                            <div id="theme-bars">
+                                <!-- Bars via JS -->
+                            </div>
+                        </div>
+
+                        <div class="sidebar-card">
+                            <div class="sidebar-title">Sentiment Methodology</div>
+                            <table style="width:100%; border-collapse: collapse; font-size:12px; color:#475569;">
+                                <thead>
+                                    <tr style="border-bottom: 2px solid #e2e8f0;">
+                                        <th style="text-align:left; padding:4px;">Sentiment</th>
+                                        <th style="text-align:right; padding:4px;">Score</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td style="padding:4px;"><span style="color:#059669; font-weight:700;">Very
+                                                Positive</span></td>
+                                        <td style="text-align:right; padding:4px; font-weight:600;">+2</td>
+                                    </tr>
+                                    <tr style="background:#f8fafc;">
+                                        <td style="padding:4px;"><span
+                                                style="color:#10b981; font-weight:600;">Positive</span></td>
+                                        <td style="text-align:right; padding:4px;">+1</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:4px;"><span style="color:#f59e0b;">Neutral / Mixed</span>
+                                        </td>
+                                        <td style="text-align:right; padding:4px;">0</td>
+                                    </tr>
+                                    <tr style="background:#f8fafc;">
+                                        <td style="padding:4px;"><span style="color:#f87171;">Negative</span></td>
+                                        <td style="text-align:right; padding:4px;">-1</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:4px;"><span style="color:#dc2626; font-weight:700;">Very
+                                                Negative</span></td>
+                                        <td style="text-align:right; padding:4px; font-weight:600;">-2</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+
+        <!-- View 3: Integrated Matrix -->
+        <div id="view-matrix" class="view-section active">
+            <div class="matrix-top-bar">
+                <div style="max-width: 900px; text-align: center;">
+                    <h2 style="font-size: 24px; font-weight: 800; color: #0f172a; margin: 0 0 10px 0;">Institutional
+                        Resilience Matrix: A Global Performance Heatmap</h2>
+                    <p
+                        style="font-size: 14px; color: #64748b; line-height: 1.6; margin: 0; max-width: 800px; margin-inline: auto;">
+                        This matrix visualizes the sentiment landscape of the global network across seven strategic
+                        performance pillars.
+                        Cells represent net sentiment scores on a scale of -100% to +100%, enabling leadership to
+                        rapidly identify high-intensity "friction points" (Red/Yellow) versus benchmarks of "operational
+                        excellence" (Green).
+                        Please note that the data visualizations presented are based on representative and synthetic
+                        datasets for diagnostic analysis.
+                    </p>
+                </div>
+            </div>
+
+            <div class="matrix-main-area">
+                <div class="matrix-card">
+                    <table id="matrix-real-table">
+                        <thead></thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <div style="text-align:center; font-size:12px; color:#94a3b8; margin-top:20px;">
+                    Use Arrow Keys (↑ ↓ ← →) to navigate cells. Click for details.
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Shared Modal -->
+    <div class="modal-overlay">
+        <div class="modal-card">
+            <div class="modal-head">
+                <span id="m-title">Detail Title</span>
+                <button id="m-close"
+                    style="background:none; border:none; cursor:pointer; font-size:24px; color:#94a3b8;">&times;</button>
+            </div>
+            <div class="modal-body" id="m-content"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
