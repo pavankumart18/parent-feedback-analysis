@@ -18,20 +18,20 @@ Example (any one of these):
 python -m http.server 8000
 ```
 
-Then open `http://localhost:8000/dashboard/`.
+Then open `http://localhost:8000/`.
 
 ## UI runtime files (required)
 
 The UI only depends on these local files:
 
-- `dashboard/index.html`
-- `dashboard/styles.css`
-- `dashboard/script.js`
-- `dashboard/full_dashboard_data.json` (loaded by `fetch('full_dashboard_data.json')`)
+- `index.html`
+- `styles.css`
+- `script.js`
+- `full_dashboard_data.json` (loaded by `fetch('full_dashboard_data.json')`)
 
 Optional content used by UI clicks:
 
-- `dashboard/School_Reports/*.pdf` (opened in a new tab when you click a school name)
+- `School_Reports/*.pdf` (opened in a new tab when you click a school name)
 
 External libraries are loaded via CDN:
 
