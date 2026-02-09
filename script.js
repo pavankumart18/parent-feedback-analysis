@@ -478,11 +478,14 @@ function renderMatrixTable() {
                 displayScore = (pct > 0 ? "+" : "") + pct + "%";
             }
 
+            // Tick for non-negative, X for negative/very-negative
+            const cellMark = (bucket === "negative" || bucket === "very-negative") ? "✗" : "✓";
+
             td.append("div")
                 .attr("class", `matrix-score-cell ${bucket}`)
                 .attr("id", `cell-${sIdx}-${tIdx}`)
                 .attr("title", item ? `Score: ${displayScore}` : "No Data")
-                .text("")
+                .text(cellMark)
                 .on("click", () => selectAndOpen(sIdx, tIdx, true));
         });
     });
