@@ -478,14 +478,16 @@ function renderMatrixTable() {
                 displayScore = (pct > 0 ? "+" : "") + pct + "%";
             }
 
-            // Tick for non-negative, X for negative/very-negative
-            const cellMark = (bucket === "negative" || bucket === "very-negative") ? "✗" : "✓";
+            // Bootstrap Icons: cross for negative/very-negative, tick for the rest
+            const cellIcon = (bucket === "negative" || bucket === "very-negative")
+                ? '<i class="bi bi-x"></i>'
+                : '<i class="bi bi-check"></i>';
 
             td.append("div")
                 .attr("class", `matrix-score-cell ${bucket}`)
                 .attr("id", `cell-${sIdx}-${tIdx}`)
                 .attr("title", item ? `Score: ${displayScore}` : "No Data")
-                .text(cellMark)
+                .html(cellIcon)
                 .on("click", () => selectAndOpen(sIdx, tIdx, true));
         });
     });

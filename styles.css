@@ -490,6 +490,11 @@ main {
     border: 1px solid transparent;
 }
 
+.matrix-score-cell .bi {
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
 .matrix-score-cell.very-positive {
     background: #4ade80;
     /* Brighter Green */
